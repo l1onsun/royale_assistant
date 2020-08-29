@@ -24,6 +24,8 @@ dependencies:
   flutter:
     sdk: flutter
   flappy_search_bar:
+  shared_preferences:
+  google_fonts:
 
 
   # The following adds the Cupertino Icons font to your application.

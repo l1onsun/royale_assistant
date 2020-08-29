@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 var myDefaultTheme = ThemeData(
   // This is the theme of your application.
@@ -16,3 +17,14 @@ var myDefaultTheme = ThemeData(
   // closer together (more dense) than on mobile platforms.
   visualDensity: VisualDensity.adaptivePlatformDensity,
 );
+
+var myTextStyle = GoogleFonts.nunito(
+  fontSize: 22,
+);
+
+TextStyle DialogTextStyle({double fontSoze, FontWeight fontWeight}) {
+  return GoogleFonts.nunito(
+    fontSize: fontSoze,
+    fontWeight: fontWeight,
+  );
+}
