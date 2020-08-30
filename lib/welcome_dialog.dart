@@ -4,23 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 //import 'main_router.dart';
 import 'themes.dart';
 
-class RichWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new RichText(
-      text: new TextSpan(
-        text: 'Hello ',
-        style: DefaultTextStyle.of(context).style,
-        children: <TextSpan>[
-          new TextSpan(
-              text: 'bold', style: new TextStyle(fontWeight: FontWeight.bold)),
-          new TextSpan(text: ' world!'),
-        ],
-      ),
-    );
-  }
-}
-
 class WelcomeDialog extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   Function callback;
@@ -29,10 +12,12 @@ class WelcomeDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // var myFocusNode = FocusNode();
+    // ScrollController s_controller = ScrollController();
+
     return AlertDialog(
-      //contentTextStyle: DialogTextStyle(),
-      content: Form(
-        key: _formKey,
+      content: SingleChildScrollView(
+        //controller: s_controller,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -46,25 +31,35 @@ class WelcomeDialog extends StatelessWidget {
                         text: 'Welcome to the\n',
                         style: TextStyle(fontSize: 20)),
                     TextSpan(
-                        text: 'Clash Royale Assisstant\n\n',
+                        text: 'Clash Royale Assisstant',
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 22)),
-                    TextSpan(
-                        text:
-                            'You can enter your player #Tag and we will prepare information for you',
-                        style: TextStyle(fontSize: 16)),
                   ],
                 ),
                 textAlign: TextAlign.center,
               ),
             ),
+            Image(
+              image: AssetImage('assets/welcome.jpg'),
+              width: 200,
+            ),
             Padding(
               padding: EdgeInsets.all(8.0),
-              child: TextFormField(
-                  decoration: InputDecoration(labelText: '#Tag XXXXXXX'),
+              child: Form(
+                key: _formKey,
+                child: TextFormField(
+                  // focusNode: myFocusNode,
+                  // onTap: () {
+                  //   Future.delayed(Duration(seconds: 1), () {
+                  //     myFocusNode.requestFocus();
+                  //     print("request focus");
+                  //   });
+                  // },
+                  decoration:
+                      InputDecoration(labelText: 'Enter your player #Tag:'),
                   validator: (String value) {
                     if (value.isEmpty) {
-                      return 'Nickname must not be empty.';
+                      return 'Tag must not be empty';
                     }
                     return null;
                   },
@@ -73,19 +68,40 @@ class WelcomeDialog extends StatelessWidget {
                     await prefs.setString("nickname", newValue);
                     Navigator.pop(context);
                     callback();
-                  }),
+                  },
+                  onFieldSubmitted: (value) {
+                    if (_formKey.currentState.validate()) {
+                      _formKey.currentState.save();
+                    }
+                  },
+                ),
+              ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: RaisedButton(
-                child: Text("Submit"),
-                onPressed: () {
-                  if (_formKey.currentState.validate()) {
-                    _formKey.currentState.save();
-                  }
-                },
-              ),
-            )
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    RaisedButton(
+                      color: Colors.grey[100],
+                      child: Text("Later"),
+                      onPressed: () {
+                        if (_formKey.currentState.validate()) {
+                          _formKey.currentState.save();
+                        }
+                      },
+                    ),
+                    RaisedButton(
+                      color: Colors.grey[100],
+                      child: Text("Submit"),
+                      onPressed: () {
+                        if (_formKey.currentState.validate()) {
+                          _formKey.currentState.save();
+                        }
+                      },
+                    ),
+                  ],
+                ))
           ],
         ),
       ),

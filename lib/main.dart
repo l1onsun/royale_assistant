@@ -13,7 +13,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'MaterialApp Title Clash',
-      theme: ThemeData(textTheme: GoogleFonts.nunitoTextTheme()),
+      theme: ThemeData(
+        primarySwatch: Colors.deepPurple,
+        textTheme: GoogleFonts.nunitoTextTheme(),
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
       home: MainRouter(),
     );
   }
