@@ -3,16 +3,16 @@ import 'package:royale_flutter/player_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'search_route.dart';
 
-List<RouteL> createRoutes() {
+List<Route_> createRoutes() {
   return [
-    RouteL(
+    Route_(
       title: "Account",
       icon: Icon(Icons.account_box),
       appbar: AppBar(title: Text("Account")),
       body: PlayerInfo(),
       fullscreen: false,
     ),
-    RouteL(
+    Route_(
       title: "Favorite",
       icon: Icon(Icons.star),
       appbar: AppBar(title: Text("Favorite"), actions: [
@@ -27,7 +27,7 @@ List<RouteL> createRoutes() {
       body: Text("Star Text"),
       fullscreen: false,
     ),
-    RouteL(
+    Route_(
       title: "Search",
       icon: Icon(Icons.search),
       appbar: AppBar(
@@ -40,13 +40,13 @@ List<RouteL> createRoutes() {
   ];
 }
 
-class RouteL {
+class Route_ {
   final Icon icon;
   String title;
   final Widget appbar;
   final Widget body;
   final bool fullscreen;
-  RouteL(
+  Route_(
       {this.icon,
       this.title,
       this.body,

@@ -14,7 +14,7 @@ class _MainRouterState extends State<MainRouter> {
   String searchQuery = "Search query";
   String temp_test = "AppBar";
 
-  final List<RouteL> _routes = createRoutes();
+  final List<Route_> _routes = createRoutes();
 
   @override
   void initState() {

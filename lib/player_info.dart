@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PlayerInfo extends StatelessWidget {
+  String player_name = "Unknown player";
+  String trophees = "????";
+
   void _get_player_info() async {
     print("_get_player_info");
-    String url = "https://proxy.royaleapi.dev/v1/clans/%23YR98LYRU";
+    var prefs = await SharedPreferences.getInstance();
+    String player_tag = prefs.getString("nickname");
+    String url = "https://proxy.royaleapi.dev/v1/players/%23" + player_tag;
     var response = await http.get(url, headers: {
       "User-Agent": "Mozilla/5.0",
       "Authorization":
