@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:royale_flutter/view/welcome_dialog.dart';
 import 'route_settings.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../data_managment/data_model.dart';
 
 class MainRouter extends StatelessWidget {
-  PageController _controller = PageController();
+  final PageController _controller = PageController();
   final List<RouteConfig> _routes = createRoutes();
   BottomBar _bar;
 
@@ -95,7 +94,6 @@ class _BottomBarState extends State<BottomBar> {
       selectedItemColor: widget._routes[_selectedIndex].color ??
           Theme.of(context).primaryColorLight, //Colors.deepPurple[400],
       onTap: (int index) {
-        setIndex(index);
         widget._pageController.animateToPage(index,
             duration: Duration(milliseconds: 500), curve: Curves.decelerate);
       },
