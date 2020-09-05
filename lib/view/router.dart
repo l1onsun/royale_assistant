@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:royale_flutter/welcome_dialog.dart';
+import 'package:royale_flutter/view/welcome_dialog.dart';
 import 'route_settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'data_managment/data_model.dart';
+import '../data_managment/data_model.dart';
 
 class MainRouter extends StatelessWidget {
   PageController _controller = PageController();
@@ -36,10 +36,19 @@ class MainRouter extends StatelessWidget {
     print("MainRouter build");
     _bar = BottomBar(_routes, _controller);
     return Scaffold(
-        body: PageView(
-          controller: _controller,
-          children: [for (var route in _routes) route.body],
-          onPageChanged: _bar.setIndex,
+        body: Container(
+          color: Colors.lightBlue[100],
+          // decoration: BoxDecoration(
+          //   image: DecorationImage(
+          //     image: AssetImage("assets/background_two.jpg"),
+          //     fit: BoxFit.cover,
+          //   ),
+          // ),
+          child: PageView(
+            controller: _controller,
+            children: [for (var route in _routes) route.body],
+            onPageChanged: _bar.setIndex,
+          ),
         ),
         bottomNavigationBar: _bar);
   }

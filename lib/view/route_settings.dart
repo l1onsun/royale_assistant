@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:royale_flutter/playerinfo_route.dart';
+import 'package:royale_flutter/view/playerinfo_route.dart';
 
 import 'search_route.dart';
 import 'favorite_route.dart';

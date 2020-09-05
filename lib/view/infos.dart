@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class InfoBase extends StatelessWidget {
   //Widget child;
@@ -8,17 +7,14 @@ class InfoBase extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          children: [
-            for (final widget in this.children)
-              Padding(
-                padding: EdgeInsets.all(10),
-                child: widget,
-              )
-          ],
+    return Padding(
+      padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
+      child: Card(
+        child: Padding(
+          padding: EdgeInsets.all(10),
+          child: Column(
+            children: this.children,
+          ),
         ),
       ),
     );
@@ -49,13 +45,14 @@ class InfoLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.all(30),
-        child: SpinKitWave(
-          controller: animationController,
-          type: SpinKitWaveType.center,
-          itemCount: 4,
-          color: Theme.of(context).primaryColorLight,
-          size: 40.0,
-        ));
+      padding: EdgeInsets.fromLTRB(60, 30, 60, 30),
+      child: LinearProgressIndicator(),
+      // SpinKitThreeBounce(
+      //   controller: animationController,
+      //   color: Theme.of(context).primaryColorLight,
+      //   size: 30.0,
+      //   duration: Duration(seconds: 2),
+      // )
+    );
   }
 }

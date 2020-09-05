@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:provider/provider.dart';
-import 'package:royale_flutter/infos.dart';
+import 'package:royale_flutter/view/infos.dart';
 import 'package:royale_flutter/data_managment/data_model.dart';
 
 class PlayerInfoRoute extends StatefulWidget {
@@ -17,6 +17,7 @@ class _PlayerInfoRouteState extends State<PlayerInfoRoute>
   @override
   bool get wantKeepAlive => true;
   AnimationController _animationController;
+  CircularProgressIndicator circularProgressIndicator;
 
   @override
   void initState() {
@@ -31,24 +32,8 @@ class _PlayerInfoRouteState extends State<PlayerInfoRoute>
       SliverAppBar(
         pinned: true,
         expandedHeight: 250.0,
+        textTheme: Theme.of(context).textTheme,
         actions: [
-          // action button
-          IconButton(
-            icon: Icon(Icons.directions_car),
-            onPressed: () {
-              Provider.of<DataModel>(context, listen: false).playerName =
-                  "directions_car";
-            },
-          ),
-          // action button
-          IconButton(
-            icon: Icon(Icons.account_balance),
-            onPressed: () {
-              Provider.of<DataModel>(context, listen: false).playerName =
-                  "account_balance  ";
-            },
-          ),
-          // overflow menu
           PopupMenuButton<WhyFarther>(
             onSelected: (WhyFarther wf) {
               Clipboard.getData('text/plain').then((ClipboardData data) {
@@ -60,34 +45,32 @@ class _PlayerInfoRouteState extends State<PlayerInfoRoute>
               });
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<WhyFarther>>[
-              const PopupMenuItem<WhyFarther>(
+              PopupMenuItem<WhyFarther>(
                 value: WhyFarther.harder,
-                child: Text('Working a lot harder'),
-              ),
-              const PopupMenuItem<WhyFarther>(
-                value: WhyFarther.smarter,
-                child: Text('Being a lot smarter'),
-              ),
-              const PopupMenuItem<WhyFarther>(
-                value: WhyFarther.selfStarter,
-                child: Text('Being a self-starter'),
-              ),
-              const PopupMenuItem<WhyFarther>(
-                value: WhyFarther.tradingCharter,
-                child: Text('Placed in charge of trading charter'),
-              ),
+                child: Row(children: const [
+                  Icon(
+                    Icons.settings,
+                    color: Colors.black,
+                  ),
+                  Text(' Settings')
+                ]),
+              )
             ],
           ),
         ],
         flexibleSpace: FlexibleSpaceBar(
+          collapseMode: CollapseMode.pin,
           title: Consumer<DataModel>(
-            builder: (context, dataModel, child) => Text(dataModel.playerName),
+            builder: (context, dataModel, child) => Text(
+              dataModel.playerName,
+              //style: TextStyle(fontFamily: "nunito"),
+            ),
           ),
           background: Image(
             image: AssetImage('assets/background_one.jpg'),
             fit: BoxFit.cover,
-            alignment: Alignment.lerp(
-                Alignment.bottomCenter, Alignment.topCenter, 0.4),
+            alignment: Alignment
+                .bottomCenter, //Alignment.lerp(Alignment.bottomCenter, Alignment.topCenter, 0.4),
           ),
         ),
       ),

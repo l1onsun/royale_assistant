@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 //import 'main_router.dart';
-import 'themes.dart';
+import '../themes.dart';
 
 class WelcomeDialog extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
