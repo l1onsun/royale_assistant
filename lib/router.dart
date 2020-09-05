@@ -1,0 +1,101 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:royale_flutter/welcome_dialog.dart';
+import 'route_settings.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'data_managment/data_model.dart';
+
+class MainRouter extends StatelessWidget {
+  PageController _controller = PageController();
+  final List<RouteConfig> _routes = createRoutes();
+  BottomBar _bar;
+
+  // void _loadPrefs() async {
+  //   prefs = await SharedPreferences.getInstance();
+  //   if (!prefs.containsKey("nickname_")) {
+  //     showDialog(
+  //       context: context,
+  //       builder: (_) => WelcomeDialog(_dialogEnd),
+  //       barrierDismissible: true,
+  //     );
+  //   } else
+  //     print("WTF");
+  // }
+
+  // void _dialogEnd() async {
+  //   //print("debbbbbug");
+  //   //print(prefs.getString("nickname") ?? "no nickname");
+  //   setState(() {
+  //     temp_test = prefs.getString("nickname") ?? "ups";
+  //   });
+  // }
+
+  @override
+  Widget build(BuildContext context) {
+    print("MainRouter build");
+    _bar = BottomBar(_routes, _controller);
+    return Scaffold(
+        body: PageView(
+          controller: _controller,
+          children: [for (var route in _routes) route.body],
+          onPageChanged: _bar.setIndex,
+        ),
+        bottomNavigationBar: _bar);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+  }
+}
+
+class BottomBar extends StatefulWidget {
+  List<RouteConfig> _routes;
+  PageController _pageController;
+  BottomBar(this._routes, this._pageController);
+
+  _BottomBarState _state;
+
+  setIndex(int index) {
+    _state.setIndex(index);
+  }
+
+  @override
+  _BottomBarState createState() {
+    _state = _BottomBarState();
+    return _state;
+  }
+}
+
+class _BottomBarState extends State<BottomBar> {
+  int _selectedIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    print("bottomBar build");
+    return BottomNavigationBar(
+      items: <BottomNavigationBarItem>[
+        for (final route in widget._routes)
+          BottomNavigationBarItem(
+            icon: route.icon,
+            title: Text(route.title),
+          ),
+      ],
+      currentIndex: _selectedIndex,
+      selectedItemColor: widget._routes[_selectedIndex].color ??
+          Theme.of(context).primaryColorLight, //Colors.deepPurple[400],
+      onTap: (int index) {
+        setIndex(index);
+        widget._pageController.animateToPage(index,
+            duration: Duration(milliseconds: 500), curve: Curves.decelerate);
+      },
+    );
+  }
+
+  setIndex(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+}
