@@ -5,6 +5,8 @@ import 'view/router.dart';
 import 'data_managment/data_model.dart';
 import 'package:provider/provider.dart';
 
+import 'data_managment/api_manager.dart';
+
 void main() async {
   runApp(Provider(
     create: (context) => DataModel(),
