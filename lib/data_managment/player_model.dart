@@ -1,22 +1,22 @@
 import 'dart:async';
 
-class PlayerClanApi {}
+class PlayerClanData {}
 
-class PlayerArenaApi {}
+class PlayerArenaData {}
 
-class PlayerLeagueApi {}
+class PlayerLeagueData {}
 
-class PlayerCardsApi {}
+class PlayerCardsData {}
 
-class PlayerFavoriteApi {}
+class PlayerFavoriteData {}
 
-class PlayerBadgesApi {}
+class PlayerBadgesData {}
 
-class PlayerAchievementsApi {}
+class PlayerAchievementsData {}
 
-class PlayerDeckApi {}
+class PlayerDeckData {}
 
-class PlayerApi {
+class PlayerData {
   String tag;
   String name;
   int expLevel;
@@ -30,28 +30,28 @@ class PlayerApi {
   // int challengeMaxWins;
   // int tournamentCardsWon;
   // int tournamentBattleCount;
-  // PlayerDeckApi currentDeck;
+  // PlayerDeckData currentDeck;
   // int warDayWins;
   // int clanCardsCollected;
   // int starPoints;
 
-  // PlayerClanApi clan;
-  // PlayerArenaApi arena;
+  // PlayerClanData clan;
+  // PlayerArenaData arena;
   // String role;
   // int wins;
   // int losses;
   // int totalDonations;
-  // PlayerLeagueApi leagueStatistics;
-  // PlayerCardsApi cards;
-  // PlayerFavoriteApi currentFavouriteCard;
-  // PlayerBadgesApi badges;
-  // PlayerAchievementsApi achievements;
+  // PlayerLeagueData leagueStatistics;
+  // PlayerCardsData cards;
+  // PlayerFavoriteData currentFavouriteCard;
+  // PlayerBadgesData badges;
+  // PlayerAchievementsData achievements;
 
-  PlayerApi(
+  PlayerData(
       {this.tag, this.bestTrophies, this.expLevel, this.name, this.trophies});
 
-  factory PlayerApi.fromJson(Map<String, dynamic> json) {
-    return PlayerApi(
+  factory PlayerData.fromJson(Map<String, dynamic> json) {
+    return PlayerData(
         tag: json["tag"],
         bestTrophies: json["bestTrophies"],
         expLevel: json["expLevel"],
@@ -67,18 +67,18 @@ class PlayerApi {
 //   int trophies;
 
 //   PlayerVital.fromJson();
-//   PlayerVital.fromPlayerApi();
+//   PlayerVital.fromPlayerData();
 // }
 
 class PlayerModel {
   final playerTag;
   PlayerModel(this.playerTag);
 
-  final _playerApiController = StreamController<PlayerApi>();
-  Stream get steam => _playerApiController.stream;
-  Sink get sink => _playerApiController.sink;
+  final _playerDataController = StreamController<PlayerData>();
+  Stream get steam => _playerDataController.stream;
+  Sink get sink => _playerDataController.sink;
 
   dispose() {
-    _playerApiController.close();
+    _playerDataController.close();
   }
 }

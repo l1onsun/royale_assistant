@@ -8,10 +8,14 @@ import 'package:provider/provider.dart';
 import 'data_managment/api_manager.dart';
 
 void main() async {
-  runApp(Provider(
-    create: (context) => DataModel(),
-    child: MyApp(),
-  ));
+  Api.https.proxyApi.players
+      .get("#89R2CQ9J0")
+      .then((player) => print(player.name));
+
+  // runApp(Provider(
+  //   create: (context) => DataModel(),
+  //   child: MyApp(),
+  // ));
 }
 
 class MyApp extends StatelessWidget {
