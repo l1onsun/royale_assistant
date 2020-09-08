@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:provider/provider.dart';
+import 'package:royale_flutter/data_managment/player_model.dart';
 import 'package:royale_flutter/view/infos.dart';
 import 'package:royale_flutter/data_managment/data_model.dart';
 
@@ -36,13 +37,13 @@ class _PlayerInfoRouteState extends State<PlayerInfoRoute>
         actions: [
           PopupMenuButton<WhyFarther>(
             onSelected: (WhyFarther wf) {
-              Clipboard.getData('text/plain').then((ClipboardData data) {
-                String newName = data.text + wf.toString();
-                Provider.of<DataModel>(context, listen: false).playerName =
-                    newName;
-                //Provider.of<DataModel>(context, listen: false)
-                //    .notifyListeners();
-              });
+              // Clipboard.getData('text/plain').then((ClipboardData data) {
+              //   String newName = data.text + wf.toString();
+              //   Provider.of<DataModel>(context, listen: false).playerName =
+              //       newName;
+              //   //Provider.of<DataModel>(context, listen: false)
+              //   //    .notifyListeners();
+              // });
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<WhyFarther>>[
               PopupMenuItem<WhyFarther>(
@@ -60,9 +61,9 @@ class _PlayerInfoRouteState extends State<PlayerInfoRoute>
         ],
         flexibleSpace: FlexibleSpaceBar(
           collapseMode: CollapseMode.pin,
-          title: Consumer<DataModel>(
-            builder: (context, dataModel, child) => Text(
-              dataModel.playerName,
+          title: Consumer<PlayerData>(
+            builder: (context, player, child) => Text(
+              player.name + ": " + player.trophies.toString(),
               //style: TextStyle(fontFamily: "nunito"),
             ),
           ),

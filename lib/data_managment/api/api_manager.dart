@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'player_model.dart';
+import '../player_model.dart';
 import 'package:http/http.dart' as http;
 
 part 'urlpath.dart';

@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'themes.dart';
+//import 'themes.dart';
 import 'view/router.dart';
 import 'data_managment/data_model.dart';
 import 'package:provider/provider.dart';
 
-import 'data_managment/api_manager.dart';
+//import 'data_managment/api_manager.dart';
+import 'data_managment/blank_data_model.dart';
 
 void main() async {
-  Api.https.proxyApi.players
-      .get("#89R2CQ9J0")
-      .then((player) => print(player.name));
-
-  // runApp(Provider(
-  //   create: (context) => DataModel(),
-  //   child: MyApp(),
-  // ));
+  runApp(FutureProvider<DataModel>(
+    initialData: DataModel.blank(),
+    create: createDataModel,
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

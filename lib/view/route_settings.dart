@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:royale_flutter/view/playerinfo_route.dart';
+import 'package:provider/provider.dart';
+import 'package:royale_flutter/data_managment/data_model.dart';
+import 'package:royale_flutter/data_managment/player_model.dart';
 
+import 'playerinfo_route.dart';
 import 'search_route.dart';
 import 'favorite_route.dart';
 
 List<RouteConfig> createRoutes() {
   return [
     RouteConfig(
-      title: "Account",
-      icon: Icon(Icons.account_circle),
-      body: PlayerInfoRoute(),
-    ),
+        title: "Player",
+        icon: Icon(Icons.account_circle),
+        body: Consumer<DataModel>(
+          builder: (context, data, _) => StreamProvider<PlayerData>.value(
+              initialData: PlayerData.blank(),
+              value: data.currentPlayerStream(),
+              builder: (_, __) => PlayerInfoRoute()),
+        )),
     RouteConfig(
       title: "Favorite",
       icon: Icon(Icons.star),

@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:royale_flutter/data_managment/data_model.dart';
+import 'api/api_manager.dart';
+
 class PlayerClanData {}
 
 class PlayerArenaData {}
@@ -17,11 +20,11 @@ class PlayerAchievementsData {}
 class PlayerDeckData {}
 
 class PlayerData {
-  String tag;
-  String name;
-  int expLevel;
-  int trophies;
-  int bestTrophies;
+  final String tag;
+  final String name;
+  final int expLevel;
+  final int trophies;
+  final int bestTrophies;
   // int donations;
   // int donationsReceived;
   // int battleCount;
@@ -47,8 +50,15 @@ class PlayerData {
   // PlayerBadgesData badges;
   // PlayerAchievementsData achievements;
 
-  PlayerData(
+  const PlayerData(
       {this.tag, this.bestTrophies, this.expLevel, this.name, this.trophies});
+
+  const PlayerData.blank()
+      : tag = "#xxxxxxxx",
+        bestTrophies = 9999,
+        name = "Noname",
+        this.expLevel = 13,
+        trophies = 9999;
 
   factory PlayerData.fromJson(Map<String, dynamic> json) {
     return PlayerData(
@@ -60,19 +70,19 @@ class PlayerData {
   }
 }
 
-// class PlayerVital {
-//   String tag;
-//   String name;
-//   int expLevel;
-//   int trophies;
-
-//   PlayerVital.fromJson();
-//   PlayerVital.fromPlayerData();
-// }
-
 class PlayerModel {
   final playerTag;
-  PlayerModel(this.playerTag);
+  bool autoUpdate = true;
+  _autoUpdate() async {
+    PlayerData player = await Api.https.proxyApi.players.get(playerTag);
+    sink.add(player);
+
+    Future.delayed(Duration(seconds: 20), _autoUpdate);
+  }
+
+  PlayerModel(this.playerTag, {this.autoUpdate}) {
+    _autoUpdate();
+  }
 
   final _playerDataController = StreamController<PlayerData>();
   Stream get steam => _playerDataController.stream;
