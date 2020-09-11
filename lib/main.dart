@@ -5,18 +5,15 @@ import 'view/router.dart';
 import 'data_managment/data_model.dart';
 import 'package:provider/provider.dart';
 
-//import 'data_managment/api_manager.dart';
-import 'data_managment/blank_data_model.dart';
-
 void main() async {
   runApp(FutureProvider<DataModel>(
     initialData: DataModel.blank(),
-    create: createDataModel,
-    child: MyApp(),
+    create: DataModel.futureCreate,
+    child: AssisstantApp(),
   ));
 }
 
-class MyApp extends StatelessWidget {
+class AssisstantApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

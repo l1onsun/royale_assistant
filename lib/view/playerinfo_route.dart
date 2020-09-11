@@ -3,8 +3,9 @@ import 'package:flutter/services.dart';
 
 import 'package:provider/provider.dart';
 import 'package:royale_flutter/data_managment/player_model.dart';
-import 'package:royale_flutter/view/infos.dart';
+import 'package:royale_flutter/view/cards/infos.dart';
 import 'package:royale_flutter/data_managment/data_model.dart';
+import 'package:royale_flutter/view/cards/player/general_player_info.dart';
 
 class PlayerInfoRoute extends StatefulWidget {
   @override
@@ -19,12 +20,6 @@ class _PlayerInfoRouteState extends State<PlayerInfoRoute>
   bool get wantKeepAlive => true;
   AnimationController _animationController;
   CircularProgressIndicator circularProgressIndicator;
-
-  @override
-  void initState() {
-    print("init State _PlayerInfoBodyState");
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,12 +56,11 @@ class _PlayerInfoRouteState extends State<PlayerInfoRoute>
         ],
         flexibleSpace: FlexibleSpaceBar(
           collapseMode: CollapseMode.pin,
-          title: Consumer<PlayerData>(
-            builder: (context, player, child) => Text(
-              player.name + ": " + player.trophies.toString(),
-              //style: TextStyle(fontFamily: "nunito"),
-            ),
-          ),
+          title: Selector<PlayerData, Map>(
+              selector: (_, player) =>
+                  {"name": player.name, "lvl": player.expLevel},
+              builder: (_, player, __) =>
+                  PlayerTitle(player["lvl"], player["name"])),
           background: Image(
             image: AssetImage('assets/background_one.jpg'),
             fit: BoxFit.cover,
@@ -76,29 +70,35 @@ class _PlayerInfoRouteState extends State<PlayerInfoRoute>
         ),
       ),
       SliverList(
-        //itemExtent: 200.0,
-        delegate: SliverChildBuilderDelegate(
-          (BuildContext context, int index) {
-            return InfoBase(children: [
-              InfoHeader(text: 'List Item $index'),
-              InfoLoading(_animationController),
-            ]);
-            // return Container(
-            //   alignment: Alignment.center,
-            //   color: Colors.lightBlue[100 * (index % 9)],
-            //   child: Text('List Item $index'),
-            // );
-          },
-        ),
+        delegate: SliverChildListDelegate([
+          GeneralPlayerInfo(),
+          InfoBase(children: [
+            InfoHeader(text: 'List Item One'),
+            InfoLoading(),
+          ]),
+          InfoBase(children: [
+            InfoHeader(text: 'List Item Two'),
+            InfoLoading(),
+          ]),
+        ]),
       ),
     ]);
+  }
+}
 
-    // return SingleChildScrollView(
-    //   child: Center(
-    //     child: Column(
-    //       children: [Text("Abra"), Text("Cadabra"), Text("Booms")],
-    //     ),
-    //   ),
-    // );
+class PlayerTitle extends StatelessWidget {
+  final String name;
+  final int lvl;
+  PlayerTitle(this.lvl, this.name);
+  @override
+  Widget build(BuildContext context) {
+    print("Level: " + lvl.toString());
+    return Row(children: [
+      Image.asset(
+        "assets/icons/lvls/" + lvl.toString() + '.png',
+        scale: 10,
+      ), // + lvl.toString() + '.png'),
+      Text(" " + name)
+    ]);
   }
 }

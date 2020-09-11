@@ -3,7 +3,19 @@ import 'dart:async';
 import 'package:royale_flutter/data_managment/data_model.dart';
 import 'api/api_manager.dart';
 
-class PlayerClanData {}
+class PlayerClanData {
+  //int badgeId: 0,
+  final String tag;
+  final String name;
+  // "badgeUrls": {}
+  const PlayerClanData({this.tag, this.name});
+  factory PlayerClanData.fromJson(Map<String, dynamic> json) {
+    return PlayerClanData(tag: json["tag"], name: json["name"]);
+  }
+  const PlayerClanData.blank()
+      : tag = "#xxxxxxxx",
+        name = "Clan unknown";
+}
 
 class PlayerArenaData {}
 
@@ -20,6 +32,7 @@ class PlayerAchievementsData {}
 class PlayerDeckData {}
 
 class PlayerData {
+  final bool blank;
   final String tag;
   final String name;
   final int expLevel;
@@ -38,7 +51,7 @@ class PlayerData {
   // int clanCardsCollected;
   // int starPoints;
 
-  // PlayerClanData clan;
+  final PlayerClanData clan;
   // PlayerArenaData arena;
   // String role;
   // int wins;
@@ -50,15 +63,23 @@ class PlayerData {
   // PlayerBadgesData badges;
   // PlayerAchievementsData achievements;
 
-  const PlayerData(
-      {this.tag, this.bestTrophies, this.expLevel, this.name, this.trophies});
+  PlayerData(
+      {this.tag,
+      this.bestTrophies,
+      this.expLevel,
+      this.name,
+      this.trophies,
+      this.clan})
+      : blank = false;
 
   const PlayerData.blank()
-      : tag = "#xxxxxxxx",
+      : blank = true,
+        tag = "#xxxxxxxx",
         bestTrophies = 9999,
-        name = "Noname",
+        name = "Player Name",
         this.expLevel = 13,
-        trophies = 9999;
+        trophies = 9999,
+        clan = const PlayerClanData.blank();
 
   factory PlayerData.fromJson(Map<String, dynamic> json) {
     return PlayerData(
@@ -66,27 +87,33 @@ class PlayerData {
         bestTrophies: json["bestTrophies"],
         expLevel: json["expLevel"],
         name: json["name"],
-        trophies: json["trophies"]);
+        trophies: json["trophies"],
+        clan: PlayerClanData.fromJson(json["clan"]));
   }
 }
 
 class PlayerModel {
   final playerTag;
   bool autoUpdate = true;
-  _autoUpdate() async {
-    PlayerData player = await Api.https.proxyApi.players.get(playerTag);
-    sink.add(player);
 
-    Future.delayed(Duration(seconds: 20), _autoUpdate);
+  final _playerDataController = StreamController<PlayerData>.broadcast();
+  Stream get steam => _playerDataController.stream;
+  Sink get sink => _playerDataController.sink;
+  PlayerData player = PlayerData.blank();
+
+  _update() async {
+    player = await Api.https.proxyApi.players.get(playerTag);
+    sink.add(player);
+  }
+
+  _autoUpdate() async {
+    _update();
+    Future.delayed(Duration(minutes: 2), _autoUpdate);
   }
 
   PlayerModel(this.playerTag, {this.autoUpdate}) {
     _autoUpdate();
   }
-
-  final _playerDataController = StreamController<PlayerData>();
-  Stream get steam => _playerDataController.stream;
-  Sink get sink => _playerDataController.sink;
 
   dispose() {
     _playerDataController.close();

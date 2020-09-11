@@ -54,29 +54,3 @@ class _UrlPath {
           _lastHeader().toString());
   }
 }
-
-// class _UrlPathEnd<T> extends _UrlPath {
-//   const _UrlPathEnd(String url, Map<String, String> headers)
-//       : super(url, headers);
-
-//   const _UrlPathEnd.fromUrlPath(_UrlPath urlPath) : super(urlPath.url, urlPath.headers) {
-//     //return _UrlPathEnd(urlPath.url, urlPath.headers);
-//   }
-//   factory _UrlPathEnd.add(_UrlPath parrent, String addUrl) {
-//     return _UrlPathEnd.fromUrlPath(_UrlPath.add(parrent, addUrl));
-//   }
-
-//   Future<T> _get(T fromJson(Map<String, String> json), {String tag}) async {
-//     var url;
-//     if (tag != null)
-//       url = this.url.appendTag(tag);
-//     else
-//       url = this.url;
-
-//     final response = await http.get(url, headers: headers);
-//     if (response.statusCode == 200)
-//       return fromJson(json.decode(response.body));
-//     else
-//       throw Exception('Failed to getPlayer' + tag);
-//   }
-// }

@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:royale_flutter/data_managment/clan_model.dart';
+
 import '../player_model.dart';
 import 'package:http/http.dart' as http;
 
@@ -16,6 +18,17 @@ class _ProxyApiPlayersPath extends _UrlPath {
   }
 }
 
+class _ProxyApiClansPath extends _UrlPath {
+  final url = "/clans";
+  const _ProxyApiClansPath(_UrlPath ancestor) : super(ancestor: ancestor);
+
+  Future<ClanData> get(String tag) {
+    return super._get((json) {
+      return ClanData.fromJson(json);
+    }, tag);
+  }
+}
+
 class _ProxyApiPath extends _UrlPath {
   final url = "/proxy.royaleapi.dev/v1";
   final headers = const {
@@ -27,6 +40,9 @@ class _ProxyApiPath extends _UrlPath {
 
   static const _players = _ProxyApiPlayersPath(_HttpsPath._proxyApi);
   _ProxyApiPlayersPath get players => _ProxyApiPath._players;
+
+  static const _clans = _ProxyApiClansPath(_HttpsPath._proxyApi);
+  _ProxyApiClansPath get clans => _ProxyApiPath._clans;
 }
 
 class _HttpsPath extends _UrlPath {
