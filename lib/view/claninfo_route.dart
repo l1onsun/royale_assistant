@@ -18,9 +18,19 @@ class _ClanInfoRouteState extends State<ClanInfoRoute> {
         expandedHeight: 250.0,
         flexibleSpace: FlexibleSpaceBar(
           collapseMode: CollapseMode.pin,
-          title: Selector<ClanData, String>(
-              selector: (_, clan) => clan.name,
-              builder: (_, clanName, __) => Text(clanName ?? "HOW!!!!")),
+          title: Selector<ClanData, List>(
+              selector: (_, clan) => [clan.name, clan.badgeId],
+              builder: (_, clan, __) => Row(children: [
+                    if (clan[1] != null)
+                      Image.network(
+                            "https://cdn.statsroyale.com/images/badges/" +
+                                clan[1].toString() +
+                                ".png",
+                            scale: 5,
+                          ) ??
+                          Text("No Image.. "),
+                    Text(clan[0])
+                  ])),
           background: Image(
             image: AssetImage('assets/background_two.jpg'),
             fit: BoxFit.cover,
