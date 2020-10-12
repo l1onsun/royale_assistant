@@ -93,26 +93,25 @@ class PlayerData {
 }
 
 class PlayerModel {
-  final playerTag;
-  bool autoUpdate = true;
+  String playerTag;
 
   final _playerDataController = StreamController<PlayerData>.broadcast();
   Stream get steam => _playerDataController.stream;
   Sink get sink => _playerDataController.sink;
   PlayerData player = PlayerData.blank();
 
-  _update() async {
+  _connect() async {
     player = await Api.https.proxyApi.players.get(playerTag);
     sink.add(player);
   }
 
-  _autoUpdate() async {
-    _update();
-    Future.delayed(Duration(minutes: 2), _autoUpdate);
+  PlayerModel([this.playerTag]) {
+    if (playerTag != null) _connect();
   }
 
-  PlayerModel(this.playerTag, {this.autoUpdate}) {
-    _autoUpdate();
+  setTag(String playerTag) {
+    this.playerTag = playerTag;
+    _connect();
   }
 
   dispose() {

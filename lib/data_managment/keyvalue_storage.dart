@@ -1,19 +1,26 @@
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive/hive.dart';
 
 class KeyValueStorage {
-  SharedPreferences repository;
+  Box preferences;
+  Box clan;
+  Box player;
 
   init() async {
-    repository = await SharedPreferences.getInstance();
+    // repository = await SharedPreferences.getInstance();
+    await Hive.initFlutter();
+    preferences = await Hive.openBox('preferences');
   }
 
   String get currentPlayerTag {
-    const String currentPlayer = "currentPlayer";
-    if (repository.containsKey(currentPlayer))
-      return repository.getString(currentPlayer);
-    else {
-      // TODO: implement WelocmDialog if player not found
-      return "#89R2CQ9J0"; // my #Tag
-    }
+    // const String currentPlayer = "currentPlayer";
+    // if (preferences.containsKey(currentPlayer))
+    //   return preferences.get(currentPlayer);
+    // else {
+    //   return null;
+
+    return preferences.get("currentPlayerTag");
+    // TODO: implement WelocmDialog if player not found
+    // return "#89R2CQ9J0"; // my #Tag
   }
 }

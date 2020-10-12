@@ -7,6 +7,20 @@ import 'package:royale_flutter/view/cards/infos.dart';
 import 'package:royale_flutter/data_managment/data_model.dart';
 import 'package:royale_flutter/view/cards/player/general_player_info.dart';
 
+StreamProvider<PlayerData> createPlayerRoute(
+    BuildContext context, String playerTag) {
+  return StreamProvider<PlayerData>.value(
+      initialData: Provider.of<DataModel>(context).playerData(playerTag),
+      value: Provider.of<DataModel>(context).playerStream(playerTag),
+      builder: (_, __) => PlayerInfoRoute());
+}
+
+void pushPlayerRoute(BuildContext context, String playerTag) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) {
+    return createPlayerRoute(context, playerTag);
+  }));
+}
+
 class PlayerInfoRoute extends StatefulWidget {
   @override
   _PlayerInfoRouteState createState() => _PlayerInfoRouteState();

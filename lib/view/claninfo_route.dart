@@ -1,8 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:royale_flutter/data_managment/data_model.dart';
 import 'package:royale_flutter/data_managment/clan_model.dart';
 
 import 'cards/infos.dart';
+
+StreamProvider<ClanData> createPlayerRoute(
+    BuildContext context, String playerTag) {
+  return StreamProvider<ClanData>.value(
+      initialData: Provider.of<DataModel>(context).clanData(playerTag),
+      value: Provider.of<DataModel>(context).clanStream(playerTag),
+      builder: (_, __) => ClanInfoRoute());
+}
+
+void pushPlayerRoute(BuildContext context, String playerTag) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) {
+    return createPlayerRoute(context, playerTag);
+  }));
+}
 
 class ClanInfoRoute extends StatefulWidget {
   @override

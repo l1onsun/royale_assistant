@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-//import 'main_router.dart';
-import '../themes.dart';
+
+void pushWelcomeDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (_) => WelcomeDialog(),
+    barrierDismissible: true,
+  );
+}
 
 class WelcomeDialog extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
-  Function callback;
-
-  WelcomeDialog(this.callback);
+  WelcomeDialog();
 
   @override
   Widget build(BuildContext context) {
@@ -45,36 +47,19 @@ class WelcomeDialog extends StatelessWidget {
             ),
             Padding(
               padding: EdgeInsets.all(8.0),
-              child: Form(
-                key: _formKey,
-                child: TextFormField(
-                  // focusNode: myFocusNode,
-                  // onTap: () {
-                  //   Future.delayed(Duration(seconds: 1), () {
-                  //     myFocusNode.requestFocus();
-                  //     print("request focus");
-                  //   });
-                  // },
-                  decoration:
-                      InputDecoration(labelText: 'Enter your player #Tag:'),
-                  validator: (String value) {
-                    if (value.isEmpty) {
-                      return 'Tag must not be empty';
-                    }
-                    return null;
-                  },
-                  onSaved: (var newValue) async {
-                    var prefs = await SharedPreferences.getInstance();
-                    await prefs.setString("nickname", newValue);
-                    Navigator.pop(context);
-                    callback();
-                  },
-                  onFieldSubmitted: (value) {
-                    if (_formKey.currentState.validate()) {
-                      _formKey.currentState.save();
-                    }
-                  },
-                ),
+              child: TextFormField(
+                // focusNode: myFocusNode,
+                // onTap: () {
+                //   Future.delayed(Duration(seconds: 1), () {
+                //     myFocusNode.requestFocus();
+                //     print("request focus");
+                //   });
+                // },
+                decoration:
+                    InputDecoration(labelText: 'Enter your player #Tag:'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
               ),
             ),
             Padding(
@@ -86,18 +71,14 @@ class WelcomeDialog extends StatelessWidget {
                       color: Colors.grey[100],
                       child: Text("Later"),
                       onPressed: () {
-                        if (_formKey.currentState.validate()) {
-                          _formKey.currentState.save();
-                        }
+                        Navigator.pop(context);
                       },
                     ),
                     RaisedButton(
                       color: Colors.grey[100],
-                      child: Text("Submit"),
+                      child: Text("Enter Tag"),
                       onPressed: () {
-                        if (_formKey.currentState.validate()) {
-                          _formKey.currentState.save();
-                        }
+                        Navigator.pop(context);
                       },
                     ),
                   ],
@@ -108,3 +89,39 @@ class WelcomeDialog extends StatelessWidget {
     );
   }
 }
+
+// void input_form() {
+//   return Padding(
+//     padding: EdgeInsets.all(8.0),
+//     child: Form(
+//       key: _formKey,
+//       child: TextFormField(
+//         // focusNode: myFocusNode,
+//         // onTap: () {
+//         //   Future.delayed(Duration(seconds: 1), () {
+//         //     myFocusNode.requestFocus();
+//         //     print("request focus");
+//         //   });
+//         // },
+//         decoration: InputDecoration(labelText: 'Enter your player #Tag:'),
+//         validator: (String value) {
+//           if (value.isEmpty) {
+//             return 'Tag must not be empty';
+//           }
+//           return null;
+//         },
+//         onSaved: (var newValue) async {
+//           var prefs = await SharedPreferences.getInstance();
+//           await prefs.setString("nickname", newValue);
+//           Navigator.pop(context);
+//           callback();
+//         },
+//         onFieldSubmitted: (value) {
+//           if (_formKey.currentState.validate()) {
+//             _formKey.currentState.save();
+//           }
+//         },
+//       ),
+//     ),
+//   );
+// }

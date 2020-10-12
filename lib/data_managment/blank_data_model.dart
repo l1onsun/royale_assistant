@@ -8,6 +8,8 @@ class BlankDataModel implements DataModel {
     yield PlayerData.blank();
   }
 
+  PlayerModel currentPlayerAwait;
+
   PlayerData currentPlayerData() {
     return PlayerData.blank();
   }

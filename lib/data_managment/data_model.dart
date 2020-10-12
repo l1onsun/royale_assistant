@@ -1,10 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:royale_flutter/data_managment/blank_data_model.dart';
 import 'package:royale_flutter/data_managment/clan_model.dart';
 
 import 'package:royale_flutter/data_managment/keyvalue_storage.dart';
 import 'package:royale_flutter/data_managment/player_model.dart';
-import 'package:royale_flutter/data_managment/sql_storage.dart';
 
 class DataModel {
   static Future<DataModel> futureCreate(_) async {
@@ -13,11 +11,12 @@ class DataModel {
     return dm;
   }
 
-  var _playerModels = Map<String, PlayerModel>();
+  var _loadedPlayerModels = Map<String, PlayerModel>();
   var _clanModels = Map<String, ClanModel>();
 
+  PlayerModel currentPlayerAwait;
+
   final _keyValueStorage;
-  final _sqlStorage = SQLStorage();
 
   DataModel._() : _keyValueStorage = KeyValueStorage();
   factory DataModel.blank() {
@@ -26,12 +25,15 @@ class DataModel {
 
   _initStorages() async {
     await _keyValueStorage.init();
-    await _sqlStorage.init();
-    //notifyListeners();
   }
 
   Stream<PlayerData> currentPlayerStream() {
-    return playerStream(_keyValueStorage.currentPlayerTag);
+    var tag = _keyValueStorage.currentPlayerTag;
+    if (tag == Null) {
+      currentPlayerAwait = PlayerModel();
+      return currentPlayerAwait.steam;
+    } else
+      return playerStream(tag);
   }
 
   PlayerData currentPlayerData() {
@@ -39,16 +41,16 @@ class DataModel {
   }
 
   Stream<PlayerData> playerStream(String tag) {
-    if (_playerModels.containsKey(tag))
-      return _playerModels[tag].steam;
+    if (_loadedPlayerModels.containsKey(tag))
+      return _loadedPlayerModels[tag].steam;
     else
       // TODO: handle if player cached or not
-      return (_playerModels[tag] = PlayerModel(tag)).steam;
+      return (_loadedPlayerModels[tag] = PlayerModel(tag)).steam;
   }
 
   PlayerData playerData(String tag) {
-    if (_playerModels.containsKey(tag))
-      return _playerModels[tag].player;
+    if (_loadedPlayerModels.containsKey(tag))
+      return _loadedPlayerModels[tag].player;
     else
       return PlayerData.blank();
   }

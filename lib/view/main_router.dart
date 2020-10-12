@@ -10,26 +10,6 @@ class MainRouter extends StatelessWidget {
   final List<RouteConfig> _routes = createRoutes();
   BottomBar _bar;
 
-  // void _loadPrefs() async {
-  //   prefs = await SharedPreferences.getInstance();
-  //   if (!prefs.containsKey("nickname_")) {
-  //     showDialog(
-  //       context: context,
-  //       builder: (_) => WelcomeDialog(_dialogEnd),
-  //       barrierDismissible: true,
-  //     );
-  //   } else
-  //     print("WTF");
-  // }
-
-  // void _dialogEnd() async {
-  //   //print("debbbbbug");
-  //   //print(prefs.getString("nickname") ?? "no nickname");
-  //   setState(() {
-  //     temp_test = prefs.getString("nickname") ?? "ups";
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     print("MainRouter build");

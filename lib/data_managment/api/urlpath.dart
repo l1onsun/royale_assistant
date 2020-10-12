@@ -21,7 +21,6 @@ class _UrlPath {
     return fullUrl;
   }
 
-  Map<String, String> test_lastHeader() => _lastHeader();
   Map<String, String> _lastHeader() {
     var lastHeader = {};
     for (_UrlPath i = this; i != null; i = i.ancestor) {
@@ -33,7 +32,6 @@ class _UrlPath {
     return lastHeader;
   }
 
-  String test_fullUrlTag(String tag) => _fullUrlTag(tag);
   String _fullUrlTag(String tag) => _fullUrl().fixTag(tag);
 
   Future<T> _get<T>(T fromJson(Map<String, dynamic> json), String tag) async {
@@ -52,5 +50,9 @@ class _UrlPath {
           response.statusCode.toString() +
           "\nheadres: " +
           _lastHeader().toString());
+  }
+
+  WebSocketChannel _channel() {
+    return IOWebSocketChannel.connect(_fullUrl());
   }
 }

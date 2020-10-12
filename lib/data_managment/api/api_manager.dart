@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:royale_flutter/data_managment/clan_model.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../player_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:web_socket_channel/io.dart';
 
 part 'urlpath.dart';
 
@@ -54,6 +56,33 @@ class _HttpsPath extends _UrlPath {
   _ProxyApiPath get proxyApi => _HttpsPath._proxyApi;
 }
 
+class _WebsocketPath extends _UrlPath {
+  final url = "/ws";
+  const _WebsocketPath() : super(ancestor: _WSPath._emulator);
+
+  WebSocketChannel channel() {
+    return _channel();
+  }
+}
+
+class _EmulatorPath extends _UrlPath {
+  final url = "/10.0.2.2:8000";
+  const _EmulatorPath() : super(ancestor: Api.ws);
+
+  static const _websocket = _WebsocketPath();
+  _WebsocketPath get websocket => _EmulatorPath._websocket;
+}
+
+class _WSPath extends _UrlPath {
+  final url = "ws:/";
+  final headers = const {};
+  const _WSPath();
+
+  static const _emulator = _EmulatorPath();
+  _EmulatorPath get emulator => _WSPath._emulator;
+}
+
 class Api {
   static const https = _HttpsPath();
+  static const ws = _WSPath();
 }
