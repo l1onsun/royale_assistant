@@ -5,7 +5,12 @@ import 'route_settings.dart';
 
 import '../data_managment/data_model.dart';
 
-class MainRouter extends StatelessWidget {
+class MainRouter extends StatefulWidget {
+  @override
+  _MainRouterState createState() => _MainRouterState();
+}
+
+class _MainRouterState extends State<MainRouter> {
   final PageController _controller = PageController();
   final List<RouteConfig> _routes = createRoutes();
   BottomBar _bar;
@@ -14,27 +19,27 @@ class MainRouter extends StatelessWidget {
   Widget build(BuildContext context) {
     print("MainRouter build");
     _bar = BottomBar(_routes, _controller);
-    return Scaffold(
-        body: Container(
-          color: Colors.lightBlue[100],
-          // decoration: BoxDecoration(
-          //   image: DecorationImage(
-          //     image: AssetImage("assets/background_two.jpg"),
-          //     fit: BoxFit.cover,
-          //   ),
-          // ),
-          child: PageView(
-            controller: _controller,
-            children: [for (var route in _routes) route.body],
-            onPageChanged: _bar.setIndex,
-          ),
-        ),
-        bottomNavigationBar: _bar);
-  }
 
-  @override
-  void dispose() {
-    _controller.dispose();
+    return Consumer<DataModel>(builder: (context, data, child) {
+      WidgetsBinding.instance.addPostFrameCallback(
+          (duration) => handleWelcomeDialog(data, context));
+      return Scaffold(
+          body: Container(
+            color: Colors.lightBlue[100],
+            // decoration: BoxDecoration(
+            //   image: DecorationImage(
+            //     image: AssetImage("assets/background_two.jpg"),
+            //     fit: BoxFit.cover,
+            //   ),
+            // ),
+            child: PageView(
+              controller: _controller,
+              children: [for (var route in _routes) route.body],
+              onPageChanged: _bar.setIndex,
+            ),
+          ),
+          bottomNavigationBar: _bar);
+    });
   }
 }
 
@@ -67,7 +72,8 @@ class _BottomBarState extends State<BottomBar> {
         for (final route in widget._routes)
           BottomNavigationBarItem(
             icon: route.icon,
-            title: Text(route.title),
+            label: route.title,
+            //title: Text(route.title),
           ),
       ],
       currentIndex: _selectedIndex,

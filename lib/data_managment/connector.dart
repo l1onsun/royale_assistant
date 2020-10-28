@@ -1,36 +1,109 @@
 import 'dart:async';
+import 'package:royale_flutter/logging.dart';
 
+import 'dart:convert';
+import 'dart:math';
 import 'package:royale_flutter/data_managment/api/api_manager.dart';
+import 'package:royale_flutter/data_managment/data_model.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
-class Connector {
-  WebSocketChannel _channel;
-  final _inputController = StreamController();
-  Stream get output => _channel.stream;
-  Sink get input => _inputController.sink;
+const logger = Logger("connector");
 
-  init() async {
+class Connector {
+  WebSocketChannel _connection;
+
+  final _outputController = StreamController.broadcast();
+  final _random = new Random();
+
+  DataModel _dataModel;
+
+  init(DataModel dataModel) {
+    _dataModel = dataModel;
+    print("init connector");
     _connectWebsocket();
   }
 
-  _connectWebsocket() async {
-    try {
-      _channel = Api.ws.emulator.websocket.channel();
-      await for (var value in _channel.stream) {
-        // change
-      }
-    } catch (e) {
-      return;
-    } finally {
-      reconnectWebsocket();
+  activate(String playerTag, int activeChange) {
+    sendRequest(_activateRequest(playerTag, activeChange));
+  }
+
+  String _activateRequest(String playerTag, int activeChange) {
+    final response = Map<String, dynamic>();
+    response['type'] = 'activate';
+    response['player_tag'] = playerTag;
+    response['active_change'] = activeChange;
+    return jsonEncode(response);
+  }
+
+  sendRequest(String request) {
+    logger.info("sendRequest", error: request);
+    _connection.sink.add(request);
+  }
+
+  _handleResponse(String value) {
+    Map<String, dynamic> info = jsonDecode(value);
+    switch (info['type']) {
+      case "init":
+        {
+          logger.info("handling init response");
+          logger.debug(info.toString()); //ToDo
+        }
+        break;
+      case "proxy":
+        {
+          logger.info("handling proxy response");
+          if (info['player'] != null)
+            _dataModel.updatePlayerFromJson(jsonDecode(info['player']));
+          if (info['clan'] != null)
+            _dataModel.updateClanFromJson(jsonDecode(info['clan']));
+          if (info['river'] != null)
+            _dataModel.updateRiverFromJson(jsonDecode(info['river']));
+        }
+        break;
+      case "player":
+        {
+          logger.info("handling player response");
+          logger.debug(info['abra']);
+          //_dataModel.updateClan(info);
+        }
+        break;
+      case "clan":
+        {
+          logger.info("handling clan response");
+          logger.debug(info['abra']);
+          //_dataModel.updateClan(info);
+        }
+        break;
     }
   }
 
-  reconnectWebsocket() {
-    _connectWebsocket();
+  _connectWebsocket() async {
+    assert(_connection == null);
+    while (true) {
+      logger.info("connecting to ws");
+      try {
+        _connection = Api.ws.emulator.websocket.channel();
+        await for (var response in _connection.stream) {
+          logger.info("Get response", error: response);
+          // print("response");
+          // print(response);
+          _handleResponse(response);
+        }
+        logger.error("websocket stream closed");
+      } catch (e, stackTrace) {
+        logger.exception("unknown exception while response handling",
+            error: e, stackTrace: stackTrace);
+      } finally {
+        _connection?.sink?.close();
+      }
+      int reconnectTime = _random.nextInt(10);
+      logger.error(
+          "webscoket reconnect in " + reconnectTime.toString() + " seconds");
+      await Future.delayed(Duration(seconds: reconnectTime));
+    }
   }
 
   dispose() {
-    _inputController.close();
+    _outputController.close();
   }
 }

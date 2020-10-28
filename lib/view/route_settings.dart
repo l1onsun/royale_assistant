@@ -14,8 +14,8 @@ List<RouteConfig> createRoutes() {
         icon: Icon(Icons.account_circle),
         body: Consumer<DataModel>(
           builder: (context, data, _) => StreamProvider<PlayerData>.value(
-              initialData: PlayerData.blank(),
-              value: data.currentPlayerStream(),
+              initialData: data.currentPlayerModel.player,
+              value: data.currentPlayerModel.stream,
               builder: (_, __) => PlayerInfoRoute()),
         )),
     RouteConfig(

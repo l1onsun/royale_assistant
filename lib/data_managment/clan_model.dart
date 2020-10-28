@@ -22,26 +22,13 @@ class ClanData {
 }
 
 class ClanModel {
-  final clanTag;
-  bool autoUpdate = true;
-
   final _clanDataController = StreamController<ClanData>.broadcast();
-  Stream get steam => _clanDataController.stream;
-  Sink get sink => _clanDataController.sink;
+  Stream get stream => _clanDataController.stream;
   ClanData clan = ClanData.blank();
 
-  _update() async {
-    clan = await Api.https.proxyApi.clans.get(clanTag);
-    sink.add(clan);
-  }
-
-  _autoUpdate() async {
-    _update();
-    Future.delayed(Duration(minutes: 2), _autoUpdate);
-  }
-
-  ClanModel(this.clanTag, {this.autoUpdate}) {
-    _autoUpdate();
+  updateClanData(ClanData clanData) {
+    clan = clanData;
+    _clanDataController.sink.add(clan);
   }
 
   dispose() {

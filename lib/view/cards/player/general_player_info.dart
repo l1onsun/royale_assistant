@@ -54,15 +54,7 @@ class GeneralPlayerInfo extends StatelessWidget {
       Selector<PlayerData, PlayerClanData>(
           selector: (_, player) => player.clan,
           builder: (_, clan, __) => InkWell(
-              onTap: () =>
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return StreamProvider<ClanData>.value(
-                        initialData:
-                            Provider.of<DataModel>(context).clanData(clan.tag),
-                        value: Provider.of<DataModel>(context)
-                            .clanStream(clan.tag),
-                        builder: (_, __) => ClanInfoRoute());
-                  })),
+              onTap: () => pushClanRoute(context, clan.tag),
               child: Row(
                 children: [
                   Text("Clan:   ", style: InfoAtom.styleLeft),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'package:provider/provider.dart';
 import 'package:royale_flutter/data_managment/player_model.dart';
@@ -9,9 +8,11 @@ import 'package:royale_flutter/view/cards/player/general_player_info.dart';
 
 StreamProvider<PlayerData> createPlayerRoute(
     BuildContext context, String playerTag) {
+  final playerModel =
+      Provider.of<DataModel>(context, listen: false).playerModel(playerTag);
   return StreamProvider<PlayerData>.value(
-      initialData: Provider.of<DataModel>(context).playerData(playerTag),
-      value: Provider.of<DataModel>(context).playerStream(playerTag),
+      initialData: playerModel.player,
+      value: playerModel.stream,
       builder: (_, __) => PlayerInfoRoute());
 }
 
@@ -32,7 +33,7 @@ class _PlayerInfoRouteState extends State<PlayerInfoRoute>
     with AutomaticKeepAliveClientMixin<PlayerInfoRoute> {
   @override
   bool get wantKeepAlive => true;
-  AnimationController _animationController;
+  //AnimationController _animationController;
   CircularProgressIndicator circularProgressIndicator;
 
   @override

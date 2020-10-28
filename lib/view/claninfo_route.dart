@@ -5,17 +5,18 @@ import 'package:royale_flutter/data_managment/clan_model.dart';
 
 import 'cards/infos.dart';
 
-StreamProvider<ClanData> createPlayerRoute(
-    BuildContext context, String playerTag) {
+StreamProvider<ClanData> createClanRoute(BuildContext context, String clanTag) {
+  final clanModel =
+      Provider.of<DataModel>(context, listen: false).clanModel(clanTag);
   return StreamProvider<ClanData>.value(
-      initialData: Provider.of<DataModel>(context).clanData(playerTag),
-      value: Provider.of<DataModel>(context).clanStream(playerTag),
+      initialData: clanModel.clan,
+      value: clanModel.stream,
       builder: (_, __) => ClanInfoRoute());
 }
 
-void pushPlayerRoute(BuildContext context, String playerTag) {
+void pushClanRoute(BuildContext context, String clanTag) {
   Navigator.push(context, MaterialPageRoute(builder: (context) {
-    return createPlayerRoute(context, playerTag);
+    return createClanRoute(context, clanTag);
   }));
 }
 

@@ -1,8 +1,5 @@
 import 'dart:async';
 
-import 'package:royale_flutter/data_managment/data_model.dart';
-import 'api/api_manager.dart';
-
 class PlayerClanData {
   //int badgeId: 0,
   final String tag;
@@ -92,26 +89,16 @@ class PlayerData {
   }
 }
 
-class PlayerModel {
-  String playerTag;
+class PlayerDatum {}
 
+class PlayerModel {
   final _playerDataController = StreamController<PlayerData>.broadcast();
-  Stream get steam => _playerDataController.stream;
-  Sink get sink => _playerDataController.sink;
+  Stream get stream => _playerDataController.stream;
   PlayerData player = PlayerData.blank();
 
-  _connect() async {
-    player = await Api.https.proxyApi.players.get(playerTag);
-    sink.add(player);
-  }
-
-  PlayerModel([this.playerTag]) {
-    if (playerTag != null) _connect();
-  }
-
-  setTag(String playerTag) {
-    this.playerTag = playerTag;
-    _connect();
+  updatePlayerData(PlayerData playerData) {
+    player = playerData;
+    _playerDataController.sink.add(player);
   }
 
   dispose() {
