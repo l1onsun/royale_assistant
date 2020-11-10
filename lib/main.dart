@@ -13,28 +13,37 @@ void main() async {
   //   channel.sink.add("ABRA cadabra");
   //   //channel.sink.close(status.goingAway);
   // })
-  runApp(AssisstantApp());
+  runApp(FutureProvider<DataModel>(
+      initialData: DataModel.blank(),
+      create: (_) {
+        return DataModel.futureCreate();
+      },
+      child: AssisstantApp()));
 }
 
 class AssisstantApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Assisstant',
-        theme: ThemeData(
-          primarySwatch: Colors.deepPurple,
-          primaryColorLight: Colors.deepPurple[400],
-          textTheme: GoogleFonts.nunitoTextTheme(TextTheme(
-              headline5: TextStyle(
-                  fontWeight: FontWeight.bold, color: Colors.black54))),
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        home: FutureProvider<DataModel>(
-            initialData: DataModel.blank(),
-            create: (_) {
-              return DataModel.futureCreate();
-            },
-            child: MainRouter()));
+    return Container(
+        // decoration: BoxDecoration(
+        //   image: DecorationImage(
+        //     image: AssetImage("assets/background_two.jpg"),
+        //     fit: BoxFit.cover,
+        //   ),
+        // ),
+        color: Theme.of(context).backgroundColor,
+        child: MaterialApp(
+            title: 'Assisstant',
+            theme: ThemeData(
+              primarySwatch: Colors.deepPurple,
+              primaryColorLight: Colors.deepPurple[400],
+              backgroundColor: Colors.lightBlue[100],
+              textTheme: GoogleFonts.nunitoTextTheme(TextTheme(
+                  headline5: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.black54))),
+              visualDensity: VisualDensity.adaptivePlatformDensity,
+            ),
+            home: MainRouter()));
   }
 }
 

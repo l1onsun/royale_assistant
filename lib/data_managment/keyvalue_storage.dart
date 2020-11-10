@@ -21,20 +21,4 @@ class KeyValueStorage {
   put(String key, dynamic value) {
     preferences.put(key, value);
   }
-
-  // String get currentPlayerTag {
-  //   return preferences.get("currentPlayerTag");
-  // }
-
-  // set currentPlayerTag(String tag) {
-  //   preferences.put("currentPlayerTag", tag);
-  // }
-
-  // bool get welcome {
-  //   return preferences.get("welcome") == true;
-  // }
-
-  // set welcome(bool flag) {
-  //   preferences.put("welcome", flag);
-  // }
 }

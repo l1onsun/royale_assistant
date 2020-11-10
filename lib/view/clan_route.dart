@@ -3,38 +3,39 @@ import 'package:provider/provider.dart';
 import 'package:royale_flutter/data_managment/data_model.dart';
 import 'package:royale_flutter/data_managment/clan_model.dart';
 
-import 'cards/infos.dart';
+import 'info/infos.dart';
 
-StreamProvider<ClanData> createClanRoute(BuildContext context, String clanTag) {
-  final clanModel =
-      Provider.of<DataModel>(context, listen: false).clanModel(clanTag);
-  return StreamProvider<ClanData>.value(
-      initialData: clanModel.clan,
-      value: clanModel.stream,
-      builder: (_, __) => ClanInfoRoute());
+Selector<DataModel, ClanModel> createClanRoute(String clanTag) {
+  return Selector<DataModel, ClanModel>(
+      selector: (_, dataModel) => dataModel.clanModel(clanTag),
+      builder: (_, clanModel, __) => StreamProvider<ApiClanData>.value(
+          initialData: clanModel.apiClanData,
+          value: clanModel.stream,
+          builder: (_, __) => ClanRoute()));
 }
 
 void pushClanRoute(BuildContext context, String clanTag) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) {
-    return createClanRoute(context, clanTag);
+  Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+    return createClanRoute(clanTag);
   }));
 }
 
-class ClanInfoRoute extends StatefulWidget {
+class ClanRoute extends StatefulWidget {
   @override
-  _ClanInfoRouteState createState() => _ClanInfoRouteState();
+  _ClanRouteState createState() => _ClanRouteState();
 }
 
-class _ClanInfoRouteState extends State<ClanInfoRoute> {
+class _ClanRouteState extends State<ClanRoute> {
   @override
   Widget build(BuildContext context) {
+    print("ClanRoute build");
     return CustomScrollView(slivers: [
       SliverAppBar(
         pinned: true,
         expandedHeight: 250.0,
         flexibleSpace: FlexibleSpaceBar(
           collapseMode: CollapseMode.pin,
-          title: Selector<ClanData, List>(
+          title: Selector<ApiClanData, List>(
               selector: (_, clan) => [clan.name, clan.badgeId],
               builder: (_, clan, __) => Row(children: [
                     if (clan[1] != null)

@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:royale_flutter/data_managment/data_model.dart';
 import 'package:royale_flutter/data_managment/player_model.dart';
 
-import 'playerinfo_route.dart';
+import 'player_route.dart';
 import 'search_route.dart';
 import 'favorite_route.dart';
 
@@ -16,7 +16,7 @@ List<RouteConfig> createRoutes() {
           builder: (context, data, _) => StreamProvider<PlayerData>.value(
               initialData: data.currentPlayerModel.player,
               value: data.currentPlayerModel.stream,
-              builder: (_, __) => PlayerInfoRoute()),
+              builder: (_, __) => PlayerRoute()),
         )),
     RouteConfig(
       title: "Favorite",

@@ -10,6 +10,7 @@ class InfoBase extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
       child: Card(
+        elevation: 4,
         child: Padding(
           padding: EdgeInsets.all(10),
           child: Column(

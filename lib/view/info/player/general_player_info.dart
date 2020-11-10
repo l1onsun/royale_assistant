@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:royale_flutter/data_managment/clan_model.dart';
-import 'package:royale_flutter/data_managment/data_model.dart';
 import 'package:royale_flutter/data_managment/player_model.dart';
-import 'package:royale_flutter/view/cards/infos.dart';
-
-import '../../claninfo_route.dart';
+import 'package:royale_flutter/view/info/infos.dart';
 
 class TrophyInfoAtom extends StatelessWidget {
   final int trophies;
@@ -51,16 +47,19 @@ class GeneralPlayerInfo extends StatelessWidget {
                       TrophyInfoAtom("  Current: ", maxTrophies)),
             ]),
           ]),
-      Selector<PlayerData, PlayerClanData>(
-          selector: (_, player) => player.clan,
-          builder: (_, clan, __) => InkWell(
-              onTap: () => pushClanRoute(context, clan.tag),
-              child: Row(
-                children: [
-                  Text("Clan:   ", style: InfoAtom.styleLeft),
-                  Text(clan.name, style: InfoAtom.styleRight)
-                ],
-              ))),
+      // Selector<PlayerData, PlayerClanData>(
+      //     selector: (_, player) => player.clan,
+      //     builder: (context, clan, __) => InkWell(
+      //         onTap: () {
+      //           print("before pushClanRoute");
+      //           pushClanRoute(context, clan.tag);
+      //         },
+      //         child: Row(
+      //           children: [
+      //             Text("Clan:   ", style: InfoAtom.styleLeft),
+      //             Text(clan.name, style: InfoAtom.styleRight)
+      //           ],
+      //         ))),
       //InfoAtom(leftText: " Clan: ", rightText: clanName)),
       Selector<PlayerData, String>(
           selector: (_, player) => player.clan.tag,

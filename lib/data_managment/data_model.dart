@@ -79,19 +79,24 @@ class DataModel {
     }
   }
 
-  updatePlayerFromJson(Map<String, dynamic> playerJson) {
+  updateApiPlayer(Map<String, dynamic> playerJson) {
     _loadedPlayerModels[playerJson['tag']]
-        .updatePlayerData(PlayerData.fromJson(playerJson));
+        ?.updatePlayerData(PlayerData.fromJson(playerJson));
   }
 
-  updateClanFromJson(Map<String, dynamic> clanJson) {
+  updateApiClan(Map<String, dynamic> clanJson) {
     _loadedClanModels[clanJson['tag']]
-        .updateClanData(ClanData.fromJson(clanJson));
+        ?.updateApiClanData(ApiClanData.fromJson(clanJson));
   }
 
-  updateRiverFromJson(Map<String, dynamic> riverJson) {
+  updateApiRiver(Map<String, dynamic> riverJson) {
     logger.warning(
         "river handling shoud be implementented in updateClanFromJson");
+  }
+
+  updateClanForm(Map<String, dynamic> clanForm) {
+    _loadedClanModels[clanForm['clan_tag']]
+        ?.updateClanForm(ClanForm.fromJson(clanForm));
   }
 
   changeCurrentPlayer(String newTag, [String oldTag]) {
@@ -99,6 +104,7 @@ class DataModel {
     if (oldTag == null) {
       _loadedPlayerModels[newTag] = currentPlayerModel;
       _handleNewPlayer(newTag);
+      _connector.activate(newTag, 10);
     } else {
       throw UnimplementedError();
     }
@@ -125,7 +131,7 @@ class DataModel {
   String _clanRequest(String clanTag) {
     // TODO: Last updated!
     final response = Map<String, dynamic>();
-    response['type'] = 'player';
+    response['type'] = 'clan';
     response['clan_tag'] = clanTag;
     return jsonEncode(response);
   }

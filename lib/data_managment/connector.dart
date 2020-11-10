@@ -53,25 +53,24 @@ class Connector {
         {
           logger.info("handling proxy response");
           if (info['player'] != null)
-            _dataModel.updatePlayerFromJson(jsonDecode(info['player']));
+            _dataModel.updateApiPlayer(jsonDecode(info['player']));
           if (info['clan'] != null)
-            _dataModel.updateClanFromJson(jsonDecode(info['clan']));
+            _dataModel.updateApiClan(jsonDecode(info['clan']));
           if (info['river'] != null)
-            _dataModel.updateRiverFromJson(jsonDecode(info['river']));
+            _dataModel.updateApiRiver(jsonDecode(info['river']));
         }
         break;
       case "player":
         {
           logger.info("handling player response");
-          logger.debug(info['abra']);
-          //_dataModel.updateClan(info);
+          // _dataModel.updatePlayerFromJson(info); // TODO
         }
         break;
       case "clan":
         {
-          logger.info("handling clan response");
-          logger.debug(info['abra']);
-          //_dataModel.updateClan(info);
+          logger.info("handling clan form response");
+          _dataModel.updateClanForm(info); //TODO
+          logger.info("success!");
         }
         break;
     }
@@ -90,13 +89,15 @@ class Connector {
           _handleResponse(response);
         }
         logger.error("websocket stream closed");
+      } on WebSocketChannelException catch (e) {
+        logger.exception("websocket connection refused", error: e);
       } catch (e, stackTrace) {
         logger.exception("unknown exception while response handling",
             error: e, stackTrace: stackTrace);
       } finally {
         _connection?.sink?.close();
       }
-      int reconnectTime = _random.nextInt(10);
+      int reconnectTime = 4 + _random.nextInt(10);
       logger.error(
           "webscoket reconnect in " + reconnectTime.toString() + " seconds");
       await Future.delayed(Duration(seconds: reconnectTime));

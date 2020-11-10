@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'clan_model.dart';
 import 'data_model.dart';
 import 'player_model.dart';
@@ -28,20 +26,24 @@ class BlankDataModel implements DataModel {
     return blankClanModel;
   }
 
-  updatePlayerFromJson(Map<String, dynamic> json) {
-    throw Exception("BlankDataModel trying updatePlayer");
+  updateApiPlayer(Map<String, dynamic> json) {
+    throw Exception("BlankDataModel trying updateApiPlayer");
   }
 
-  updateClanFromJson(Map<String, dynamic> json) {
-    throw Exception("BlankDataModel trying updateClan");
+  updateApiClan(Map<String, dynamic> json) {
+    throw Exception("BlankDataModel trying updateApiClan");
   }
 
-  updateRiverFromJson(Map<String, dynamic> riverJson) {
-    throw Exception("BlankDataModel trying updateRiver");
+  updateApiRiver(Map<String, dynamic> riverJson) {
+    throw Exception("BlankDataModel trying updateApiRiver");
   }
 
   changeCurrentPlayer(String newTag, [String oldTag]) {
     throw Exception("BlankDataModel trying changeCurrentPlayer");
+  }
+
+  updateClanForm(Map<String, dynamic> clanForm) {
+    throw Exception("BlankDataModel trying updateClanForm");
   }
 
   dispose() {

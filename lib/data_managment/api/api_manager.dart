@@ -24,9 +24,9 @@ class _ProxyApiClansPath extends _UrlPath {
   final url = "/clans";
   const _ProxyApiClansPath(_UrlPath ancestor) : super(ancestor: ancestor);
 
-  Future<ClanData> get(String tag) {
+  Future<ApiClanData> get(String tag) {
     return super._get((json) {
-      return ClanData.fromJson(json);
+      return ApiClanData.fromJson(json);
     }, tag);
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:royale_flutter/view/welcome_dialog.dart';
+import 'package:royale_flutter/view/auxiliary/welcome_dialog.dart';
 import 'route_settings.dart';
 
 import '../data_managment/data_model.dart';
@@ -24,21 +24,14 @@ class _MainRouterState extends State<MainRouter> {
       WidgetsBinding.instance.addPostFrameCallback(
           (duration) => handleWelcomeDialog(data, context));
       return Scaffold(
-          body: Container(
-            color: Colors.lightBlue[100],
-            // decoration: BoxDecoration(
-            //   image: DecorationImage(
-            //     image: AssetImage("assets/background_two.jpg"),
-            //     fit: BoxFit.cover,
-            //   ),
-            // ),
-            child: PageView(
-              controller: _controller,
-              children: [for (var route in _routes) route.body],
-              onPageChanged: _bar.setIndex,
-            ),
-          ),
-          bottomNavigationBar: _bar);
+        body: PageView(
+          controller: _controller,
+          children: [for (var route in _routes) route.body],
+          onPageChanged: _bar.setIndex,
+        ),
+        bottomNavigationBar: _bar,
+        backgroundColor: Theme.of(context).backgroundColor,
+      );
     });
   }
 }

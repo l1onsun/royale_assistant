@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:royale_flutter/data_managment/data_model.dart';
-import 'package:royale_flutter/view/select_tag_form.dart';
+import 'package:royale_flutter/view/auxiliary/select_tag_form.dart';
 
 void handleWelcomeDialog(DataModel data, BuildContext context) {
   print("data.welcome: " + data.welcome.toString());
